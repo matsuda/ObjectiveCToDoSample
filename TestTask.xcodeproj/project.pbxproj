@@ -27,6 +27,8 @@
 		0E8F82331B1C44F20085FFAF /* UITableView+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F82321B1C44F20085FFAF /* UITableView+Extensions.m */; };
 		0E8F82361B1C4A950085FFAF /* KeyboardAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F82351B1C4A950085FFAF /* KeyboardAccessoryView.m */; };
 		0E8F82381B1C4B530085FFAF /* KeyboardAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8F82371B1C4B530085FFAF /* KeyboardAccessoryView.xib */; };
+		0E8F823D1B1C4FDA0085FFAF /* PickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F823C1B1C4FDA0085FFAF /* PickerController.m */; };
+		0E8F82401B1C4FE80085FFAF /* DatePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F823F1B1C4FE80085FFAF /* DatePickerController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +77,10 @@
 		0E8F82341B1C4A950085FFAF /* KeyboardAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardAccessoryView.h; sourceTree = "<group>"; };
 		0E8F82351B1C4A950085FFAF /* KeyboardAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardAccessoryView.m; sourceTree = "<group>"; };
 		0E8F82371B1C4B530085FFAF /* KeyboardAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeyboardAccessoryView.xib; sourceTree = "<group>"; };
+		0E8F823B1B1C4FDA0085FFAF /* PickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerController.h; sourceTree = "<group>"; };
+		0E8F823C1B1C4FDA0085FFAF /* PickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerController.m; sourceTree = "<group>"; };
+		0E8F823E1B1C4FE80085FFAF /* DatePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerController.h; sourceTree = "<group>"; };
+		0E8F823F1B1C4FE80085FFAF /* DatePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +199,10 @@
 				0E8F81F51B1C27090085FFAF /* DetailViewController.m */,
 				0E8F821C1B1C29980085FFAF /* EditViewController.h */,
 				0E8F821D1B1C29980085FFAF /* EditViewController.m */,
+				0E8F823B1B1C4FDA0085FFAF /* PickerController.h */,
+				0E8F823C1B1C4FDA0085FFAF /* PickerController.m */,
+				0E8F823E1B1C4FE80085FFAF /* DatePickerController.h */,
+				0E8F823F1B1C4FE80085FFAF /* DatePickerController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -321,12 +331,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E8F82331B1C44F20085FFAF /* UITableView+Extensions.m in Sources */,
+				0E8F82401B1C4FE80085FFAF /* DatePickerController.m in Sources */,
 				0E8F82181B1C283C0085FFAF /* Task+Mock.m in Sources */,
 				0E8F82361B1C4A950085FFAF /* KeyboardAccessoryView.m in Sources */,
 				0E8F82211B1C2E6A0085FFAF /* FlexibleLabelCell.m in Sources */,
 				0E8F82151B1C282A0085FFAF /* Task.m in Sources */,
 				0E8F81F01B1C27090085FFAF /* AppDelegate.m in Sources */,
 				0E8F821E1B1C29980085FFAF /* EditViewController.m in Sources */,
+				0E8F823D1B1C4FDA0085FFAF /* PickerController.m in Sources */,
 				0E8F81F31B1C27090085FFAF /* MasterViewController.m in Sources */,
 				0E8F82241B1C2E800085FFAF /* TextFieldCell.m in Sources */,
 				0E8F81ED1B1C27090085FFAF /* main.m in Sources */,

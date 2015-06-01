@@ -12,13 +12,17 @@
 #import "Task.h"
 #import "UITableView+Extensions.h"
 #import "KeyboardAccessoryView.h"
+#import "PickerController.h"
+#import "DatePickerController.h"
 
 static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 static NSString *TextViewCellIdentifier = @"TextViewCell";
 
 @interface EditViewController ()
 <UITableViewDataSource, UITableViewDelegate,
-UITextFieldDelegate, UITextViewDelegate>
+UITextFieldDelegate, UITextViewDelegate,
+UIPickerViewDataSource, UIPickerViewDelegate,
+PickerControllerDelegate, DatePickerControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @end
@@ -180,6 +184,12 @@ UITextFieldDelegate, UITextViewDelegate>
             [cell.textView becomeFirstResponder];
             break;
         }
+        case TaskPropertyPriority:
+            [self presentPickerController];
+            break;
+        case TaskPropertyDueDate:
+            [self presentDatePickerController];
+            break;
         default:
             break;
     }
@@ -270,6 +280,101 @@ UITextFieldDelegate, UITextViewDelegate>
     if (indexPath) {
         [self assignText:textView.text atIndexPath:indexPath];
     }
+}
+
+#pragma mark - PickerController
+
+- (void)presentPickerController
+{
+    [self.view endEditing:YES];
+
+    PickerController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"PickerController"];
+    __weak typeof(self) wself = self;
+    [controller presentPickerWithAnimated:YES completion:^(BOOL finished) {
+        TaskPriority priority = wself.task.priority;
+        [controller.pickerView selectRow:priority+1 inComponent:0 animated:YES];
+    }];
+    [self addChildViewController:controller];
+    [controller didMoveToParentViewController:self];
+    controller.delegate = self;
+    controller.pickerView.delegate = self;
+    controller.pickerView.dataSource = self;
+}
+
+- (void)dismissPickerController:(PickerController *)controller
+{
+    [controller dismissPickerWithAnimated:YES completion:^(BOOL finished) {
+        [controller willMoveToParentViewController:nil];
+        [controller removeFromParentViewController];
+    }];
+}
+
+- (void)pickerControllerDidCancel:(PickerController *)controller
+{
+    [self dismissPickerController:controller];
+}
+
+- (void)pickerControllerDidSelect:(PickerController *)controller
+{
+    NSInteger index = [controller.pickerView selectedRowInComponent:0];
+    [self dismissPickerController:controller];
+
+    self.task.priority = index - 1;
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:TaskPropertyPriority inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return 3;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    TaskPriority priority = row - 1;
+    return TaskPriorityString(priority);
+}
+
+#pragma mark - DatePickerController
+
+- (void)presentDatePickerController
+{
+    [self.view endEditing:YES];
+
+    DatePickerController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"DatePickerController"];
+    __weak typeof(self) wself = self;
+    [controller presentPickerWithAnimated:YES completion:^(BOOL finished) {
+        controller.datePicker.date = wself.task.dueDate;
+    }];
+    [self addChildViewController:controller];
+    [controller didMoveToParentViewController:self];
+    controller.delegate = self;
+}
+
+- (void)dismissDatePickerController:(DatePickerController *)controller
+{
+    [controller dismissPickerWithAnimated:YES completion:^(BOOL finished) {
+        [controller willMoveToParentViewController:nil];
+        [controller removeFromParentViewController];
+    }];
+}
+
+- (void)datePickerControllerDidCancel:(DatePickerController *)controller
+{
+    [self dismissDatePickerController:controller];
+}
+
+- (void)datePickerControllerDidSelect:(DatePickerController *)controller
+{
+    NSDate *date = controller.datePicker.date;
+    [self dismissDatePickerController:controller];
+
+    self.task.dueDate = date;
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:TaskPropertyDueDate inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 @end
