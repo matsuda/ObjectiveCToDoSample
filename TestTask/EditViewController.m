@@ -10,10 +10,11 @@
 #import "TextFieldCell.h"
 #import "TextViewCell.h"
 #import "Task.h"
-#import "UITableView+Extensions.h"
 #import "KeyboardAccessoryView.h"
 #import "PickerController.h"
 #import "DatePickerController.h"
+#import "UITableView+Extensions.h"
+#import "UIViewController+Keyboard.h"
 
 static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 static NSString *TextViewCellIdentifier = @"TextViewCell";
@@ -43,11 +44,13 @@ PickerControllerDelegate, DatePickerControllerDelegate>
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self addObserverForKeyboardNotifications];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [self removeObserverForKeyboardNotifications];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,6 +67,16 @@ PickerControllerDelegate, DatePickerControllerDelegate>
     // Pass the selected object to the new view controller.
 }
 */
+
+- (UIView *)inputAccessoryView
+{
+    return [self keyboardAccessorView];
+}
+
+- (UIScrollView *)scrollViewForKeyboardNotifications
+{
+    return self.tableView;
+}
 
 - (IBAction)tapSubmit:(id)sender {
     [self.view endEditing:YES];
@@ -104,11 +117,6 @@ PickerControllerDelegate, DatePickerControllerDelegate>
     self.tableView.rowHeight = 44;
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([TextFieldCell class]) bundle:nil] forCellReuseIdentifier:TextFieldCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([TextViewCell class]) bundle:nil] forCellReuseIdentifier:TextViewCellIdentifier];
-}
-
-- (UIView *)inputAccessoryView
-{
-    return [self keyboardAccessorView];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

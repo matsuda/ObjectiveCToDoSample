@@ -29,6 +29,7 @@
 		0E8F82381B1C4B530085FFAF /* KeyboardAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8F82371B1C4B530085FFAF /* KeyboardAccessoryView.xib */; };
 		0E8F823D1B1C4FDA0085FFAF /* PickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F823C1B1C4FDA0085FFAF /* PickerController.m */; };
 		0E8F82401B1C4FE80085FFAF /* DatePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F823F1B1C4FE80085FFAF /* DatePickerController.m */; };
+		0E8F82431B1C5D5E0085FFAF /* UIViewController+Keyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F82421B1C5D5E0085FFAF /* UIViewController+Keyboard.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,8 @@
 		0E8F823C1B1C4FDA0085FFAF /* PickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerController.m; sourceTree = "<group>"; };
 		0E8F823E1B1C4FE80085FFAF /* DatePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerController.h; sourceTree = "<group>"; };
 		0E8F823F1B1C4FE80085FFAF /* DatePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerController.m; sourceTree = "<group>"; };
+		0E8F82411B1C5D5E0085FFAF /* UIViewController+Keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Keyboard.h"; sourceTree = "<group>"; };
+		0E8F82421B1C5D5E0085FFAF /* UIViewController+Keyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Keyboard.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +215,8 @@
 			children = (
 				0E8F82311B1C44F20085FFAF /* UITableView+Extensions.h */,
 				0E8F82321B1C44F20085FFAF /* UITableView+Extensions.m */,
+				0E8F82411B1C5D5E0085FFAF /* UIViewController+Keyboard.h */,
+				0E8F82421B1C5D5E0085FFAF /* UIViewController+Keyboard.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -341,6 +346,7 @@
 				0E8F823D1B1C4FDA0085FFAF /* PickerController.m in Sources */,
 				0E8F81F31B1C27090085FFAF /* MasterViewController.m in Sources */,
 				0E8F82241B1C2E800085FFAF /* TextFieldCell.m in Sources */,
+				0E8F82431B1C5D5E0085FFAF /* UIViewController+Keyboard.m in Sources */,
 				0E8F81ED1B1C27090085FFAF /* main.m in Sources */,
 				0E8F81F61B1C27090085FFAF /* DetailViewController.m in Sources */,
 				0E8F82271B1C2E940085FFAF /* TextViewCell.m in Sources */,
