@@ -24,6 +24,9 @@
 		0E8F822B1B1C2EDB0085FFAF /* FlexibleLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8F82281B1C2EDB0085FFAF /* FlexibleLabelCell.xib */; };
 		0E8F822C1B1C2EDB0085FFAF /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8F82291B1C2EDB0085FFAF /* TextFieldCell.xib */; };
 		0E8F822D1B1C2EDB0085FFAF /* TextViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8F822A1B1C2EDB0085FFAF /* TextViewCell.xib */; };
+		0E8F82331B1C44F20085FFAF /* UITableView+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F82321B1C44F20085FFAF /* UITableView+Extensions.m */; };
+		0E8F82361B1C4A950085FFAF /* KeyboardAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F82351B1C4A950085FFAF /* KeyboardAccessoryView.m */; };
+		0E8F82381B1C4B530085FFAF /* KeyboardAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8F82371B1C4B530085FFAF /* KeyboardAccessoryView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +70,11 @@
 		0E8F82281B1C2EDB0085FFAF /* FlexibleLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlexibleLabelCell.xib; sourceTree = "<group>"; };
 		0E8F82291B1C2EDB0085FFAF /* TextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextFieldCell.xib; sourceTree = "<group>"; };
 		0E8F822A1B1C2EDB0085FFAF /* TextViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextViewCell.xib; sourceTree = "<group>"; };
+		0E8F82311B1C44F20085FFAF /* UITableView+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+Extensions.h"; sourceTree = "<group>"; };
+		0E8F82321B1C44F20085FFAF /* UITableView+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+Extensions.m"; sourceTree = "<group>"; };
+		0E8F82341B1C4A950085FFAF /* KeyboardAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardAccessoryView.h; sourceTree = "<group>"; };
+		0E8F82351B1C4A950085FFAF /* KeyboardAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardAccessoryView.m; sourceTree = "<group>"; };
+		0E8F82371B1C4B530085FFAF /* KeyboardAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeyboardAccessoryView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +125,8 @@
 				0E8F81EA1B1C27090085FFAF /* Supporting Files */,
 				0E8F822F1B1C3A6F0085FFAF /* Models */,
 				0E8F822E1B1C2F820085FFAF /* TableCell */,
+				0E8F82391B1C4E5C0085FFAF /* Extensions */,
+				0E8F823A1B1C4E6D0085FFAF /* Views */,
 			);
 			path = TestTask;
 			sourceTree = "<group>";
@@ -185,6 +195,25 @@
 				0E8F821D1B1C29980085FFAF /* EditViewController.m */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		0E8F82391B1C4E5C0085FFAF /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0E8F82311B1C44F20085FFAF /* UITableView+Extensions.h */,
+				0E8F82321B1C44F20085FFAF /* UITableView+Extensions.m */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		0E8F823A1B1C4E6D0085FFAF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0E8F82341B1C4A950085FFAF /* KeyboardAccessoryView.h */,
+				0E8F82351B1C4A950085FFAF /* KeyboardAccessoryView.m */,
+				0E8F82371B1C4B530085FFAF /* KeyboardAccessoryView.xib */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -273,6 +302,7 @@
 				0E8F81FE1B1C27090085FFAF /* LaunchScreen.xib in Resources */,
 				0E8F81FB1B1C27090085FFAF /* Images.xcassets in Resources */,
 				0E8F822D1B1C2EDB0085FFAF /* TextViewCell.xib in Resources */,
+				0E8F82381B1C4B530085FFAF /* KeyboardAccessoryView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,7 +320,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E8F82331B1C44F20085FFAF /* UITableView+Extensions.m in Sources */,
 				0E8F82181B1C283C0085FFAF /* Task+Mock.m in Sources */,
+				0E8F82361B1C4A950085FFAF /* KeyboardAccessoryView.m in Sources */,
 				0E8F82211B1C2E6A0085FFAF /* FlexibleLabelCell.m in Sources */,
 				0E8F82151B1C282A0085FFAF /* Task.m in Sources */,
 				0E8F81F01B1C27090085FFAF /* AppDelegate.m in Sources */,

@@ -10,6 +10,8 @@
 #import "TextFieldCell.h"
 #import "TextViewCell.h"
 #import "Task.h"
+#import "UITableView+Extensions.h"
+#import "KeyboardAccessoryView.h"
 
 static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 static NSString *TextViewCellIdentifier = @"TextViewCell";
@@ -61,6 +63,19 @@ UITextFieldDelegate, UITextViewDelegate>
 
 - (IBAction)tapSubmit:(id)sender {
     [self.view endEditing:YES];
+    NSMutableArray *messages = [NSMutableArray array];
+    if (![self.task.title length]) {
+        [messages addObject:@"タイトルを入力してください。"];
+    }
+    if ([messages count] > 0) {
+        NSString *message = [messages componentsJoinedByString:@"\n"];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"入力エラー" message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        }]];
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+
     [self.delegate editViewController:self didFinishWithSave:YES];
     [self dismiss];
 }
@@ -85,6 +100,11 @@ UITextFieldDelegate, UITextViewDelegate>
     self.tableView.rowHeight = 44;
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([TextFieldCell class]) bundle:nil] forCellReuseIdentifier:TextFieldCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([TextViewCell class]) bundle:nil] forCellReuseIdentifier:TextViewCellIdentifier];
+}
+
+- (UIView *)inputAccessoryView
+{
+    return [self keyboardAccessorView];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -147,6 +167,25 @@ UITextFieldDelegate, UITextViewDelegate>
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.row) {
+        case TaskPropertyTitle: {
+            TextFieldCell *cell = (TextFieldCell *)[tableView cellForRowAtIndexPath:indexPath];
+            [cell.textField becomeFirstResponder];
+            break;
+        }
+        case TaskPropertyMemo: {
+            TextViewCell *cell = (TextViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+            [cell.textView becomeFirstResponder];
+            break;
+        }
+        default:
+            break;
+    }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.row) {
@@ -180,6 +219,56 @@ UITextFieldDelegate, UITextViewDelegate>
         }
         default:
             break;
+    }
+}
+
+- (void)assignText:(NSString *)text atIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.row) {
+        case TaskPropertyTitle:
+            self.task.title = text;
+            break;
+        case TaskPropertyMemo:
+            self.task.memo = text;
+            break;
+    }
+}
+
+#pragma mark - UITextField delegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    NSIndexPath *indexPath = [self.tableView xxx_indexPathAtFirstRespondingView:textField];
+    if (indexPath) {
+        [self.tableView xxx_flashRowAtIndexPath:indexPath];
+    }
+    return true;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    NSIndexPath *indexPath = [self.tableView xxx_indexPathAtFirstRespondingView:textField];
+    if (indexPath) {
+        [self assignText:textField.text atIndexPath:indexPath];
+    }
+}
+
+#pragma mark - UITextView delegate
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    NSIndexPath *indexPath = [self.tableView xxx_indexPathAtFirstRespondingView:textView];
+    if (indexPath) {
+        [self.tableView xxx_flashRowAtIndexPath:indexPath];
+    }
+    return true;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    NSIndexPath *indexPath = [self.tableView xxx_indexPathAtFirstRespondingView:textView];
+    if (indexPath) {
+        [self assignText:textView.text atIndexPath:indexPath];
     }
 }
 

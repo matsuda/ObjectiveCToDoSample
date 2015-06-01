@@ -12,7 +12,7 @@
 #import "Task.h"
 #import "Task+Mock.h"
 
-@interface MasterViewController ()
+@interface MasterViewController () <EditViewControllerDelegate>
 @property NSMutableArray *objects;
 @property NSMutableArray *dataSource;
 @end
@@ -59,7 +59,8 @@
     if ([segue.identifier isEqualToString:@"createTask"]) {
         UINavigationController *navi = (UINavigationController *)segue.destinationViewController;
         EditViewController *c = (EditViewController *)[navi.viewControllers firstObject];
-        c.task = [Task mock];
+        c.task = [Task new];
+        c.delegate = self;
     }
 }
 
@@ -93,6 +94,13 @@
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
     }
+}
+
+#pragma mark -
+
+- (void)editViewController:(EditViewController *)controller didFinishWithSave:(BOOL)saved
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 @end
