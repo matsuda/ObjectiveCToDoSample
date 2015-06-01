@@ -32,4 +32,5 @@ typedef NS_ENUM(NSInteger, TaskPriority) {
 
 @end
 
+FOUNDATION_EXPORT NSString *TaskPropertyString(TaskProperty property);
 FOUNDATION_EXPORT NSString *TaskPriorityString(TaskPriority priority);

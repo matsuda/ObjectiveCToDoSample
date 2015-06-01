@@ -38,6 +38,19 @@
 
 @end
 
+NSString *TaskPropertyString(TaskProperty property) {
+    switch (property) {
+        case TaskPropertyTitle:
+            return @"タイトル";
+        case TaskPropertyPriority:
+            return @"優先度";
+        case TaskPropertyDueDate:
+            return @"予定日時";
+        case TaskPropertyMemo:
+            return @"メモ";
+    }
+}
+
 NSString *TaskPriorityString(TaskPriority priority) {
     switch (priority) {
         case TaskPriorityRow:

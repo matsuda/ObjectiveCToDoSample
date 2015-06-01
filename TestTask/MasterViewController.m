@@ -52,8 +52,9 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSDate *object = self.objects[indexPath.row];
-        [[segue destinationViewController] setDetailItem:object];
+        Task *task = self.dataSource[indexPath.row];
+        DetailViewController *destination = (DetailViewController *)segue.destinationViewController;
+        destination.task = task;
     }
     if ([segue.identifier isEqualToString:@"createTask"]) {
         UINavigationController *navi = (UINavigationController *)segue.destinationViewController;

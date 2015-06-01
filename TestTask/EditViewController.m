@@ -153,28 +153,28 @@ UITextFieldDelegate, UITextViewDelegate>
         case TaskPropertyTitle: {
             TextFieldCell *editCell = (TextFieldCell *)cell;
             editCell.textField.placeholder = @"入力";
-            editCell.label.text = @"タイトル";
+            editCell.label.text = TaskPropertyString(indexPath.row);
             editCell.textField.text = self.task.title;
             break;
         }
         case TaskPropertyMemo: {
             TextViewCell *editCell = (TextViewCell *)cell;
             editCell.label.font = [UIFont systemFontOfSize:17];
-            editCell.label.text = @"メモ";
+            editCell.label.text = TaskPropertyString(indexPath.row);
             editCell.textView.text = self.task.memo;
             break;
         }
         case TaskPropertyPriority: {
             cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
             cell.detailTextLabel.textColor = [UIColor blackColor];
-            cell.textLabel.text = @"優先度";
+            cell.textLabel.text = TaskPropertyString(indexPath.row);
             cell.detailTextLabel.text = TaskPriorityString(self.task.priority);
             break;
         }
         case TaskPropertyDueDate: {
             cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
             cell.detailTextLabel.textColor = [UIColor blackColor];
-            cell.textLabel.text = @"予定日時";
+            cell.textLabel.text = TaskPropertyString(indexPath.row);
             cell.detailTextLabel.text = [self.task dueDateAsString];
             break;
         }
