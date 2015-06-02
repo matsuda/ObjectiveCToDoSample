@@ -14,7 +14,7 @@
 @interface EditViewController : UIViewController
 
 @property (weak, nonatomic) id <EditViewControllerDelegate> delegate;
-@property (strong, nonatomic) Task *task;
+@property (copy, nonatomic) Task *task;
 
 @end
 

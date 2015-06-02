@@ -19,6 +19,16 @@
     return self;
 }
 
+- (void)copyWithOrigin:(Task *)origin
+{
+    [super copyWithOrigin:origin];
+    self.priority = origin.priority;
+    self.title = origin.title;
+    self.priority = origin.priority;
+    self.dueDate = origin.dueDate;
+    self.memo = origin.memo;
+}
+
 - (NSString *)dueDateAsString
 {
     NSDateFormatter *formatter = [self dateFormatter];

@@ -29,14 +29,13 @@ static NSString * MemoCellIdentifier = @"MemoCell";
 {
     if (_task != task) {
         _task = task;
-        [self.tableView reloadData];
+        self.title = task.title;
     }
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.title = self.task.title;
     [self prepareTableView];
 }
 
@@ -178,7 +177,6 @@ static NSString * MemoCellIdentifier = @"MemoCell";
     if (!task) return;
 
     self.task = task;
-    [self.tableView reloadData];
     [[NSNotificationCenter defaultCenter] postNotificationName:DidUpdateTaskNotification
                                                         object:nil
                                                       userInfo:@{UpdatedTaskKey: task}];

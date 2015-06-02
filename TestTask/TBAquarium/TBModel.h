@@ -9,11 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "TBDatabase.h"
 
-@interface TBModel : NSObject
+@interface TBModel : NSObject <NSCopying>
 
 @property (nonatomic, assign) sqlite_int64 primaryKey;
-@property (nonatomic, strong) NSDate     *createdAt;
-@property (nonatomic, copy)   NSString   *errorMessage;
+@property (nonatomic, strong) NSDate *createdAt;
 
 + (NSString *)tableName;
 + (void)setDatabase:(TBDatabase *)database;
@@ -35,12 +34,9 @@
 + (BOOL)deleteWithCondition:(NSString *)condition withParameters:(NSArray *)parameters;
 + (BOOL)deleteAll;
 
-- (NSArray *)columnsWithoutPrimaryKey;
-- (BOOL)valid;
-
-- (NSDate *)toLocalCreatedAt;
-
 @end
 
 @interface TBModel (Protected)
+// NSCopying
+- (void)copyWithOrigin:(id)origin;
 @end
