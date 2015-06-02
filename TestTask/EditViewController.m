@@ -13,19 +13,22 @@
 #import "KeyboardAccessoryView.h"
 #import "PickerController.h"
 #import "DatePickerController.h"
-#import "UITableView+Extensions.h"
-#import "UIViewController+Keyboard.h"
+#import "KeyboardAccessoryView.h"
 
 static NSString *TextFieldCellIdentifier = @"TextFieldCell";
 static NSString *TextViewCellIdentifier = @"TextViewCell";
 
-@interface EditViewController ()
-<UITableViewDataSource, UITableViewDelegate,
-UITextFieldDelegate, UITextViewDelegate,
-UIPickerViewDataSource, UIPickerViewDelegate,
-PickerControllerDelegate, DatePickerControllerDelegate>
+@interface EditViewController () <
+    UITableViewDataSource, UITableViewDelegate,
+    UITextFieldDelegate, UITextViewDelegate,
+    UIPickerViewDataSource, UIPickerViewDelegate,
+    PickerControllerDelegate, DatePickerControllerDelegate,
+    KeyboardAccessoryViewDelegate
+>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) NSValue *scrollViewContentInset;
+@property (strong, nonatomic) KeyboardAccessoryView *accessoryView;
 @end
 
 @implementation EditViewController
@@ -68,14 +71,32 @@ PickerControllerDelegate, DatePickerControllerDelegate>
 }
 */
 
+#pragma mark - inputAccessoryView
+
 - (UIView *)inputAccessoryView
 {
-    return [self keyboardAccessorView];
+    return self.accessoryView;
 }
 
-- (UIScrollView *)scrollViewForKeyboardNotifications
+- (KeyboardAccessoryView *)accessoryView
 {
-    return self.tableView;
+    if (!_accessoryView) {
+        UINib *nib = [UINib nibWithNibName:NSStringFromClass([KeyboardAccessoryView class]) bundle:nil];
+        KeyboardAccessoryView *view = [[nib instantiateWithOwner:nil options:nil] firstObject];
+        view.delegate = self;
+        _accessoryView = view;
+    }
+    return _accessoryView;
+}
+
+- (void)keyboardAccessoryView:(KeyboardAccessoryView *)view didTapDone:(UIBarButtonItem *)button
+{
+    [self.view endEditing:YES];
+}
+
+- (void)keyboardAccessoryView:(KeyboardAccessoryView *)view didTapClose:(UIBarButtonItem *)button
+{
+    [self.view endEditing:YES];
 }
 
 - (IBAction)tapSubmit:(id)sender {
@@ -240,6 +261,35 @@ PickerControllerDelegate, DatePickerControllerDelegate>
     }
 }
 
+- (void)selectRowAtFirstRespondingView:(UIView *)current
+{
+    NSIndexPath *indexPath = [self indexPathAtFirstRespondingView:current];
+    if (indexPath) {
+        [self flashRowAtIndexPath:indexPath];
+    }
+}
+
+- (NSIndexPath *)indexPathAtFirstRespondingView:(UIView *)current
+{
+    UIView *view = current.superview;
+    while (view != nil && ![view isKindOfClass:[UITableViewCell class]]) {
+        view = view.superview;
+    }
+    if ([view isKindOfClass:[UITableViewCell class]]) {
+        return [self.tableView indexPathForCell:(UITableViewCell *)view];
+    }
+    return nil;
+}
+
+- (void)flashRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+    static CGFloat delay = 0.1;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    });
+}
+
 - (void)assignText:(NSString *)text atIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.row) {
@@ -256,16 +306,16 @@ PickerControllerDelegate, DatePickerControllerDelegate>
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    NSIndexPath *indexPath = [self.tableView xxx_indexPathAtFirstRespondingView:textField];
+    NSIndexPath *indexPath = [self indexPathAtFirstRespondingView:textField];
     if (indexPath) {
-        [self.tableView xxx_flashRowAtIndexPath:indexPath];
+        [self flashRowAtIndexPath:indexPath];
     }
     return true;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    NSIndexPath *indexPath = [self.tableView xxx_indexPathAtFirstRespondingView:textField];
+    NSIndexPath *indexPath = [self indexPathAtFirstRespondingView:textField];
     if (indexPath) {
         [self assignText:textField.text atIndexPath:indexPath];
     }
@@ -275,19 +325,83 @@ PickerControllerDelegate, DatePickerControllerDelegate>
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    NSIndexPath *indexPath = [self.tableView xxx_indexPathAtFirstRespondingView:textView];
+    NSIndexPath *indexPath = [self indexPathAtFirstRespondingView:textView];
     if (indexPath) {
-        [self.tableView xxx_flashRowAtIndexPath:indexPath];
+        [self flashRowAtIndexPath:indexPath];
     }
     return true;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    NSIndexPath *indexPath = [self.tableView xxx_indexPathAtFirstRespondingView:textView];
+    NSIndexPath *indexPath = [self indexPathAtFirstRespondingView:textView];
     if (indexPath) {
         [self assignText:textView.text atIndexPath:indexPath];
     }
+}
+
+
+#pragma mark - Keyboard
+
+- (NSValue *)scrollViewContentInset
+{
+    if (!_scrollViewContentInset) {
+        _scrollViewContentInset = [NSValue valueWithUIEdgeInsets:self.tableView.contentInset];
+    }
+    return _scrollViewContentInset;
+}
+
+- (void)addObserverForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)removeObserverForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+
+    CGRect keyboardEndFrameInScreen = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect keyboardEndFrameInWindow = [window convertRect:keyboardEndFrameInScreen fromWindow:nil];
+    CGRect keyboardEndFrameInView = [self.view convertRect:keyboardEndFrameInWindow fromView:nil];
+    CGFloat heightCoveredWithKeyboard = CGRectGetMaxY(self.tableView.frame) - CGRectGetMinY(keyboardEndFrameInView);
+
+    UIEdgeInsets insets = [[self scrollViewContentInset] UIEdgeInsetsValue];
+    insets.bottom = heightCoveredWithKeyboard;
+    [self scrollView:self.tableView setInsets:insets givenUserInfo:userInfo];
+
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    if (indexPath) {
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+    }
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    UIEdgeInsets insets = [[self scrollViewContentInset] UIEdgeInsetsValue];
+    [self scrollView:self.tableView setInsets:insets givenUserInfo:notification.userInfo];
+}
+
+- (void)scrollView:(UIScrollView *)scrollView setInsets:(UIEdgeInsets)insets givenUserInfo:(NSDictionary *)userInfo
+{
+    double duration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve animationCurve = [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+    UIViewAnimationOptions animationOptions = (animationCurve << 16);
+    [UIView animateWithDuration:duration
+                          delay:0
+                        options:animationOptions
+                     animations:^{
+                         scrollView.contentInset = insets;
+                         scrollView.scrollIndicatorInsets = insets;
+                     }
+                     completion:nil];
 }
 
 #pragma mark - PickerController

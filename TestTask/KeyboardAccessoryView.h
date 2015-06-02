@@ -24,10 +24,3 @@
 - (void)keyboardAccessoryView:(KeyboardAccessoryView *)view didTapClose:(UIBarButtonItem *)button;
 
 @end
-
-
-@interface UIViewController (KeyboardAccessoryView) <KeyboardAccessoryViewDelegate>
-
-- (KeyboardAccessoryView *)keyboardAccessorView;
-
-@end

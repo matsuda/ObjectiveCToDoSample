@@ -24,12 +24,10 @@
 		0E8F822B1B1C2EDB0085FFAF /* FlexibleLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8F82281B1C2EDB0085FFAF /* FlexibleLabelCell.xib */; };
 		0E8F822C1B1C2EDB0085FFAF /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8F82291B1C2EDB0085FFAF /* TextFieldCell.xib */; };
 		0E8F822D1B1C2EDB0085FFAF /* TextViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8F822A1B1C2EDB0085FFAF /* TextViewCell.xib */; };
-		0E8F82331B1C44F20085FFAF /* UITableView+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F82321B1C44F20085FFAF /* UITableView+Extensions.m */; };
 		0E8F82361B1C4A950085FFAF /* KeyboardAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F82351B1C4A950085FFAF /* KeyboardAccessoryView.m */; };
 		0E8F82381B1C4B530085FFAF /* KeyboardAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8F82371B1C4B530085FFAF /* KeyboardAccessoryView.xib */; };
 		0E8F823D1B1C4FDA0085FFAF /* PickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F823C1B1C4FDA0085FFAF /* PickerController.m */; };
 		0E8F82401B1C4FE80085FFAF /* DatePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F823F1B1C4FE80085FFAF /* DatePickerController.m */; };
-		0E8F82431B1C5D5E0085FFAF /* UIViewController+Keyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F82421B1C5D5E0085FFAF /* UIViewController+Keyboard.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,8 +71,6 @@
 		0E8F82281B1C2EDB0085FFAF /* FlexibleLabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlexibleLabelCell.xib; sourceTree = "<group>"; };
 		0E8F82291B1C2EDB0085FFAF /* TextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextFieldCell.xib; sourceTree = "<group>"; };
 		0E8F822A1B1C2EDB0085FFAF /* TextViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextViewCell.xib; sourceTree = "<group>"; };
-		0E8F82311B1C44F20085FFAF /* UITableView+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+Extensions.h"; sourceTree = "<group>"; };
-		0E8F82321B1C44F20085FFAF /* UITableView+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+Extensions.m"; sourceTree = "<group>"; };
 		0E8F82341B1C4A950085FFAF /* KeyboardAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardAccessoryView.h; sourceTree = "<group>"; };
 		0E8F82351B1C4A950085FFAF /* KeyboardAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardAccessoryView.m; sourceTree = "<group>"; };
 		0E8F82371B1C4B530085FFAF /* KeyboardAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeyboardAccessoryView.xib; sourceTree = "<group>"; };
@@ -82,8 +78,6 @@
 		0E8F823C1B1C4FDA0085FFAF /* PickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerController.m; sourceTree = "<group>"; };
 		0E8F823E1B1C4FE80085FFAF /* DatePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerController.h; sourceTree = "<group>"; };
 		0E8F823F1B1C4FE80085FFAF /* DatePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerController.m; sourceTree = "<group>"; };
-		0E8F82411B1C5D5E0085FFAF /* UIViewController+Keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Keyboard.h"; sourceTree = "<group>"; };
-		0E8F82421B1C5D5E0085FFAF /* UIViewController+Keyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Keyboard.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,7 +128,6 @@
 				0E8F81EA1B1C27090085FFAF /* Supporting Files */,
 				0E8F822F1B1C3A6F0085FFAF /* Models */,
 				0E8F822E1B1C2F820085FFAF /* TableCell */,
-				0E8F82391B1C4E5C0085FFAF /* Extensions */,
 				0E8F823A1B1C4E6D0085FFAF /* Views */,
 			);
 			path = TestTask;
@@ -208,17 +201,6 @@
 				0E8F823F1B1C4FE80085FFAF /* DatePickerController.m */,
 			);
 			name = Controllers;
-			sourceTree = "<group>";
-		};
-		0E8F82391B1C4E5C0085FFAF /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				0E8F82311B1C44F20085FFAF /* UITableView+Extensions.h */,
-				0E8F82321B1C44F20085FFAF /* UITableView+Extensions.m */,
-				0E8F82411B1C5D5E0085FFAF /* UIViewController+Keyboard.h */,
-				0E8F82421B1C5D5E0085FFAF /* UIViewController+Keyboard.m */,
-			);
-			name = Extensions;
 			sourceTree = "<group>";
 		};
 		0E8F823A1B1C4E6D0085FFAF /* Views */ = {
@@ -335,7 +317,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E8F82331B1C44F20085FFAF /* UITableView+Extensions.m in Sources */,
 				0E8F82401B1C4FE80085FFAF /* DatePickerController.m in Sources */,
 				0E8F82181B1C283C0085FFAF /* Task+Mock.m in Sources */,
 				0E8F82361B1C4A950085FFAF /* KeyboardAccessoryView.m in Sources */,
@@ -346,7 +327,6 @@
 				0E8F823D1B1C4FDA0085FFAF /* PickerController.m in Sources */,
 				0E8F81F31B1C27090085FFAF /* MasterViewController.m in Sources */,
 				0E8F82241B1C2E800085FFAF /* TextFieldCell.m in Sources */,
-				0E8F82431B1C5D5E0085FFAF /* UIViewController+Keyboard.m in Sources */,
 				0E8F81ED1B1C27090085FFAF /* main.m in Sources */,
 				0E8F81F61B1C27090085FFAF /* DetailViewController.m in Sources */,
 				0E8F82271B1C2E940085FFAF /* TextViewCell.m in Sources */,

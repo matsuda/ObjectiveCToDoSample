@@ -42,25 +42,3 @@
 }
 
 @end
-
-
-@implementation UIViewController (KeyboardAccessoryView)
-
-- (KeyboardAccessoryView *)keyboardAccessorView
-{
-    KeyboardAccessoryView *view = [KeyboardAccessoryView getInstance];
-    view.delegate = self;
-    return view;
-}
-
-- (void)keyboardAccessoryView:(KeyboardAccessoryView *)view didTapDone:(UIBarButtonItem *)button
-{
-    [self.view endEditing:YES];
-}
-
-- (void)keyboardAccessoryView:(KeyboardAccessoryView *)view didTapClose:(UIBarButtonItem *)button
-{
-    [self.view endEditing:YES];
-}
-
-@end
