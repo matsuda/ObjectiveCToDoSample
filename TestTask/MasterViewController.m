@@ -99,9 +99,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-
-    Task *task = self.dataSource[indexPath.row];
-    cell.textLabel.text = task.title;
+    [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
 
@@ -125,6 +123,13 @@
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
     }
+}
+
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    Task *task = self.dataSource[indexPath.row];
+    cell.textLabel.text = task.title;
+    cell.detailTextLabel.text = [task dueDateAsString];
 }
 
 #pragma mark -

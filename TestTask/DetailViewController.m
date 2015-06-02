@@ -103,17 +103,22 @@ static NSString * MemoCellIdentifier = @"MemoCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    UITableViewCell *cell = nil;
     switch (indexPath.row) {
         case TaskPropertyTitle:
         case TaskPropertyPriority:
         case TaskPropertyDueDate:
-            return [self tableView:tableView labelCellForRowAtIndexPath:indexPath];
+            cell = [self tableView:tableView labelCellForRowAtIndexPath:indexPath];
+            break;
         case TaskPropertyMemo:
-            return [self tableView:tableView memoCellForRowAtIndexPath:indexPath];
+            cell = [self tableView:tableView memoCellForRowAtIndexPath:indexPath];
+            break;
         default:
-            return [self tableView:tableView defaultCellForRowAtIndexPath:indexPath];
+            cell = [self tableView:tableView defaultCellForRowAtIndexPath:indexPath];
             break;
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView defaultCellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -161,7 +166,6 @@ static NSString * MemoCellIdentifier = @"MemoCell";
 
 - (void)configureMemoCell:(FlexibleLabelCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.contentLabel.font = [UIFont systemFontOfSize:15];
     cell.contentLabel.text = self.task.memo;
 }
