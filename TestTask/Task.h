@@ -6,7 +6,7 @@
 //  Copyright (c) 2015年 matsuda. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "TBModel.h"
 
 typedef NS_ENUM(NSInteger, TaskProperty) {
     TaskPropertyTitle,
@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger, TaskPriority) {
     TaskPriorityHigh,
 };
 
-@interface Task : NSObject
+@interface Task : TBModel
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *memo;

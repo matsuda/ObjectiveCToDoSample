@@ -8,6 +8,17 @@
 
 #import "AppDelegate.h"
 #import "DetailViewController.h"
+#import "TBDatabase.h"
+#import "ToDoMigration.h"
+
+#if DEBUG
+// http://www.zero4racer.com/blog/480
+static void uncaughtExceptionHandler(NSException *exception) {
+    NSLog(@"CRASH: %@", exception);
+    NSLog(@"Stack Trace: %@", [exception callStackSymbols]);
+    // Internal error reporting
+}
+#endif
 
 @interface AppDelegate ()
 
@@ -18,6 +29,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+#if DEBUG
+    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+#endif
+    self.database = [TBDatabase databaseWithFileName:@"test_todo.db"];
+    if (![self.database open]) {
+        NSAssert1(false, @"The TBDatabase %@ is not open.", self.database);
+    }
+#if DEBUG
+    self.database.traceExecution = YES;
+#endif
+    [ToDoMigration migrateWithDatabase:self.database];
     return YES;
 }
 

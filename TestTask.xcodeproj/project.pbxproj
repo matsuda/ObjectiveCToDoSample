@@ -38,6 +38,7 @@
 		0E8F82611B1C63D70085FFAF /* TBMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F825C1B1C63D70085FFAF /* TBMigration.m */; };
 		0E8F82621B1C63D70085FFAF /* TBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8F825E1B1C63D70085FFAF /* TBModel.m */; };
 		0E8F82641B1C641E0085FFAF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E8F82631B1C641E0085FFAF /* libsqlite3.dylib */; };
+		0ECBAE781B1D52950007F9A7 /* ToDoMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ECBAE771B1D52950007F9A7 /* ToDoMigration.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +110,8 @@
 		0E8F825D1B1C63D70085FFAF /* TBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBModel.h; sourceTree = "<group>"; };
 		0E8F825E1B1C63D70085FFAF /* TBModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBModel.m; sourceTree = "<group>"; };
 		0E8F82631B1C641E0085FFAF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		0ECBAE761B1D52950007F9A7 /* ToDoMigration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToDoMigration.h; sourceTree = "<group>"; };
+		0ECBAE771B1D52950007F9A7 /* ToDoMigration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToDoMigration.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +167,8 @@
 				0E8F822F1B1C3A6F0085FFAF /* Models */,
 				0E8F822E1B1C2F820085FFAF /* TableCell */,
 				0E8F823A1B1C4E6D0085FFAF /* Views */,
+				0ECBAE761B1D52950007F9A7 /* ToDoMigration.h */,
+				0ECBAE771B1D52950007F9A7 /* ToDoMigration.m */,
 			);
 			path = TestTask;
 			sourceTree = "<group>";
@@ -387,6 +392,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E8F82401B1C4FE80085FFAF /* DatePickerController.m in Sources */,
+				0ECBAE781B1D52950007F9A7 /* ToDoMigration.m in Sources */,
 				0E8F82181B1C283C0085FFAF /* Task+Mock.m in Sources */,
 				0E8F82361B1C4A950085FFAF /* KeyboardAccessoryView.m in Sources */,
 				0E8F82511B1C62600085FFAF /* FMDatabaseAdditions.m in Sources */,

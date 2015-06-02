@@ -16,3 +16,6 @@
 
 @end
 
+
+FOUNDATION_EXPORT NSString * const DidUpdateTaskNotification;
+FOUNDATION_EXPORT NSString * const UpdatedTaskKey;

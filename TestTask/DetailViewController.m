@@ -11,6 +11,9 @@
 #import "Task.h"
 #import "FlexibleLabelCell.h"
 
+NSString * const DidUpdateTaskNotification = @"DidUpdateTaskNotification";
+NSString * const UpdatedTaskKey = @"UpdatedTaskKey";
+
 static NSString * MemoCellIdentifier = @"MemoCell";
 
 @interface DetailViewController () <UITableViewDataSource, UITableViewDelegate, EditViewControllerDelegate>
@@ -165,9 +168,16 @@ static NSString * MemoCellIdentifier = @"MemoCell";
 
 #pragma mark - 
 
-- (void)editViewController:(EditViewController *)controller didFinishWithSave:(BOOL)saved
+- (void)editViewController:(EditViewController *)controller didFinishSaveWithTask:(Task *)task
 {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSLog(@"%s saved task >>> %@", __PRETTY_FUNCTION__, task);
+    if (!task) return;
+
+    self.task = task;
+    [self.tableView reloadData];
+    [[NSNotificationCenter defaultCenter] postNotificationName:DidUpdateTaskNotification
+                                                        object:nil
+                                                      userInfo:@{UpdatedTaskKey: task}];
 }
 
 @end

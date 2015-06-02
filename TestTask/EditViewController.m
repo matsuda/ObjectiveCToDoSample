@@ -114,13 +114,26 @@ static NSString *TextViewCellIdentifier = @"TextViewCell";
         return;
     }
 
-    [self.delegate editViewController:self didFinishWithSave:YES];
+    if (![self.task save]) {
+        NSString *message = nil;
+        if ([self isUpdateMode]) {
+            message = @"更新できませんでした。";
+        } else {
+            message = @"新規作成できませんでした。";
+        }
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"保存エラー" message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        }]];
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+    [self.delegate editViewController:self didFinishSaveWithTask:self.task];
     [self dismiss];
 }
 
 - (IBAction)tapCancel:(id)sender {
     [self.view endEditing:YES];
-    [self.delegate editViewController:self didFinishWithSave:NO];
+    [self.delegate editViewController:self didFinishSaveWithTask:nil];
     [self dismiss];
 }
 
@@ -131,6 +144,11 @@ static NSString *TextViewCellIdentifier = @"TextViewCell";
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }
+}
+
+- (BOOL)isUpdateMode
+{
+    return self.presentingViewController == nil;
 }
 
 - (void)prepareTableView

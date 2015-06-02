@@ -20,6 +20,6 @@
 
 @protocol EditViewControllerDelegate <NSObject>
 
-- (void)editViewController:(EditViewController *)controller didFinishWithSave:(BOOL)saved;
+- (void)editViewController:(EditViewController *)controller didFinishSaveWithTask:(Task *)task;
 
 @end
