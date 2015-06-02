@@ -18,15 +18,14 @@
 + (NSString *)tableName;
 + (void)setDatabase:(TBDatabase *)database;
 + (TBDatabase *)database;
+
 + (instancetype)findById:(NSUInteger)primaryKey;
 + (NSArray *)findAll;
 + (NSArray *)findWithSql:(NSString *)sql withParameters:(NSArray *)parameters;
-+ (NSArray *)findWithSql:(NSString *)sql withParameters:(NSArray *)parameters resultBlock:(id (^)(FMResultSet *resultSet))resultBlock;
 + (NSArray *)findWithCondition:(NSString *)condition withParameters:(NSArray *)parameters;
 + (NSArray *)findWithConditionForColumn:(NSString *)column withParameters:(NSArray *)parameters;
 + (NSUInteger)count;
 
-- (NSArray *)columnsWithoutPrimaryKey;
 - (BOOL)updateWithColumns:(NSArray *)columns;
 - (BOOL)save;
 - (BOOL)insert;
@@ -36,8 +35,12 @@
 + (BOOL)deleteWithCondition:(NSString *)condition withParameters:(NSArray *)parameters;
 + (BOOL)deleteAll;
 
+- (NSArray *)columnsWithoutPrimaryKey;
 - (BOOL)valid;
 
 - (NSDate *)toLocalCreatedAt;
 
+@end
+
+@interface TBModel (Protected)
 @end

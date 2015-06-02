@@ -8,14 +8,50 @@
 
 #import "TBModel.h"
 #import "NSString+TBAquarium.h"
+#import <objc/runtime.h>
+
+static const char * getPropertyType(objc_property_t property);
 
 static TBDatabase *__database = nil;
 static NSMutableDictionary *__tableCache = nil;
 
 
+@interface FMResultSet (TBAquarium)
+- (NSDictionary*)resultDictionaryWithPropertyList:(NSDictionary *)propertyList;
+@end
+
+@implementation FMResultSet (TBAquarium)
+- (NSDictionary*)resultDictionaryWithPropertyList:(NSDictionary *)propertyList
+{
+    NSUInteger num_cols = (NSUInteger)sqlite3_data_count([_statement statement]);
+
+    if (num_cols > 0) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:num_cols];
+        int columnCount = sqlite3_column_count([_statement statement]);
+        int columnIdx = 0;
+        for (columnIdx = 0; columnIdx < columnCount; columnIdx++) {
+            NSString *columnName = [NSString stringWithUTF8String:sqlite3_column_name([_statement statement], columnIdx)];
+            id objectValue = [self objectForColumnIndex:columnIdx];
+            NSString *type = [propertyList objectForKey:columnName];
+            if ([type isEqualToString:@"NSDate"] && [objectValue isKindOfClass:[NSNumber class]]) {
+                objectValue = [NSDate dateWithTimeIntervalSince1970:[objectValue doubleValue]];
+            }
+            [dict setObject:objectValue forKey:columnName];
+        }
+        return dict;
+    }
+    else {
+        NSLog(@"Warning: There seem to be no columns in this set.");
+    }
+    return nil;
+}
+@end
+
+
 @interface TBModel ()
 
 @property (nonatomic, assign) BOOL  savedInDatabase;
+@property (nonatomic, strong) NSDictionary *propertyList;
 
 + (void)assertDatabaseExists;
 - (NSArray *)propertyValues;
@@ -62,6 +98,33 @@ static NSMutableDictionary *__tableCache = nil;
 
 #pragma mark - DB Methods
 
+- (NSDictionary *)propertyList
+{
+    if (!_propertyList) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+
+        unsigned int outCount;
+        objc_property_t *properties = class_copyPropertyList([self class], &outCount);
+        for (int i = 0; i < outCount; i++) {
+            objc_property_t property = properties[i];
+            const char *propName = property_getName(property);
+
+            // printf("name = %s\n", propName);
+            if (propName) {
+                const char *propType = getPropertyType(property);
+                NSString *propertyName = [[NSString alloc] initWithCString:propName encoding:NSUTF8StringEncoding];
+                NSString *propertyType = [[NSString alloc] initWithCString:propType encoding:NSUTF8StringEncoding];
+                // NSLog(@"propertyName >>>> %@", propertyName);
+                // NSLog(@"propertyType >>>> %@", propertyType);
+                [dict setObject:propertyType forKey:propertyName];
+            }
+        }
+        _propertyList = [NSDictionary dictionaryWithDictionary:dict];
+        free(properties);
+    }
+    return _propertyList;
+}
+
 - (NSArray *)columns
 {
     if (!__tableCache) {
@@ -90,12 +153,13 @@ static NSMutableDictionary *__tableCache = nil;
 
     for (NSString *column in [self columnsWithoutPrimaryKey]) {
         id value = [self valueForKey:column];
-        if (value)
+        if (value) {
             [values addObject:value];
-        else if ([column isEqualToString:@"createdAt"])
+        } else if ([column isEqualToString:@"createdAt"]) {
             [values addObject:[NSDate date]];
-        else
+        } else {
             [values addObject:[NSNull null]];
+        }
     }
     return values;
 }
@@ -107,12 +171,13 @@ static NSMutableDictionary *__tableCache = nil;
     for (NSString *column in [self columnsWithoutPrimaryKey]) {
         if (![columns containsObject:column]) continue ;
         id value = [self valueForKey:column];
-        if (value)
+        if (value) {
             [values addObject:value];
-        else if ([column isEqualToString:@"createdAt"])
+        } else if ([column isEqualToString:@"createdAt"]) {
             [values addObject:[NSDate date]];
-        else
+        } else {
             [values addObject:[NSNull null]];
+        }
     }
     return values;
 }
@@ -154,25 +219,14 @@ static NSMutableDictionary *__tableCache = nil;
 
 + (NSArray *)findWithSql:(NSString *)sql withParameters:(NSArray *)parameters
 {
-    __weak typeof(self) wself = self;
-    return [self findWithSql:sql withParameters:parameters resultBlock:^id(FMResultSet *resultSet) {
-        TBModel *model = [wself new];
-        [model setValuesForKeysWithDictionary:[resultSet resultDictionary]];
-        model.savedInDatabase = YES;
-        return model;
-    }];
-}
-
-+ (NSArray *)findWithSql:(NSString *)sql withParameters:(NSArray *)parameters resultBlock:(id (^)(FMResultSet *resultSet))resultBlock
-{
     [self assertDatabaseExists];
     NSMutableArray *results = [@[] mutableCopy];
     FMResultSet  *resultSet = [[self database] executeQuery:sql withArgumentsInArray:parameters];
-    if (resultBlock) {
-        while ([resultSet next]) {
-            id obj = resultBlock(resultSet);
-            [results addObject:obj];
-        }
+    while ([resultSet next]) {
+        TBModel *model = [self new];
+        [model setValuesForKeysWithDictionary:[resultSet resultDictionaryWithPropertyList:model.propertyList]];
+        model.savedInDatabase = YES;
+        [results addObject:model];
     }
     return results;
 }
@@ -306,3 +360,22 @@ static NSMutableDictionary *__tableCache = nil;
 }
 
 @end
+
+static const char * getPropertyType(objc_property_t property) {
+    const char *attributes = property_getAttributes(property);
+    char buffer[1 + strlen(attributes)];
+    strcpy(buffer, attributes);
+    char *state = buffer, *attribute;
+    while ((attribute = strsep(&state, ",")) != NULL) {
+        if (attribute[0] == 'T' && attribute[1] != '@') {
+            return (const char *)[[NSData dataWithBytes:(attribute + 1) length:strlen(attribute) - 1] bytes];
+        }
+        else if (attribute[0] == 'T' && attribute[1] == '@' && strlen(attribute) == 2) {
+            return "id";
+        }
+        else if (attribute[0] == 'T' && attribute[1] == '@') {
+            return (const char *)[[NSData dataWithBytes:(attribute + 3) length:strlen(attribute) - 4] bytes];
+        }
+    }
+    return "";
+}
