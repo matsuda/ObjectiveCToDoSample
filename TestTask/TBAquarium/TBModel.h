@@ -35,8 +35,3 @@
 + (BOOL)deleteAll;
 
 @end
-
-@interface TBModel (Protected)
-// NSCopying
-- (void)copyWithOrigin:(id)origin;
-@end

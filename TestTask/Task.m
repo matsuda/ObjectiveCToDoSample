@@ -19,9 +19,17 @@
     return self;
 }
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    Task *obj = [super copyWithZone:zone];
+    if (obj) {
+        [obj copyWithOrigin:self];
+    }
+    return obj;
+}
+
 - (void)copyWithOrigin:(Task *)origin
 {
-    [super copyWithOrigin:origin];
     self.priority = origin.priority;
     self.title = origin.title;
     self.priority = origin.priority;

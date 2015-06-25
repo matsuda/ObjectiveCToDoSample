@@ -95,20 +95,14 @@ static NSMutableDictionary *__tableCache = nil;
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    id obj = [[self class] allocWithZone:zone];
+    TBModel *obj = [[[self class] allocWithZone:zone] init];
     if (obj) {
-        [obj copyWithOrigin:self];
+        obj.primaryKey = self.primaryKey;
+        obj.createdAt = self.createdAt;
+        obj.savedInDatabase = self.savedInDatabase;
+        obj.propertyList = self.propertyList;
     }
     return obj;
-}
-
-- (void)copyWithOrigin:(id)origin
-{
-    TBModel *model = origin;
-    self.primaryKey = model.primaryKey;
-    self.createdAt = model.createdAt;
-    self.savedInDatabase = model.savedInDatabase;
-    self.propertyList = model.propertyList;
 }
 
 #pragma mark - DB Methods
